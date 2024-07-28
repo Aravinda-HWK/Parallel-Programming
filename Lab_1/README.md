@@ -7,7 +7,7 @@ This repository is used for lab exercises in the Parallel and Concurrent Program
 To compile the C program, use the following command in the terminal:
 
 ```bash
-gcc -g -Wall -o {filename} {filename}.c -lpthread
+gcc -std=c99 -o {filename} {filename}.c -lpthread
 ```
 
 To run the C program, use the following command in the termianl:
