@@ -1,1 +1,2 @@
 n: 1000, m: 10000, m_member: 9899, m_insert: 50, m_delete: 50, thread_count: 8, time: 31.219000
+n: 1000, m: 10000, m_member: 9899, m_insert: 50, m_delete: 50, thread_count: 8, time: 30.048000
