@@ -20,6 +20,7 @@ int Member(int value, struct list_node_s *head_p);
 int Insert(int value, struct list_node_s **head_pp);
 int Delete(int value, struct list_node_s **head_pp);
 void ExecuteOperations(struct list_node_s **head_pp);
+void ShuffleOperations(char *operations, int total_ops);
 
 // Function to check if a value is a member of the linked list
 int Member(int value, struct list_node_s *head_p) {
@@ -91,19 +92,43 @@ int Delete(int value, struct list_node_s **head_pp) {
     }
 }
 
-// Function to execute the operations sequentially
+// Function to shuffle the operations array
+void ShuffleOperations(char *operations, int total_ops) {
+    for (int i = total_ops - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        char temp = operations[i];
+        operations[i] = operations[j];
+        operations[j] = temp;
+    }
+}
+
+// Function to execute the operations sequentially with randomness
 void ExecuteOperations(struct list_node_s **head_pp) {
+    char *operations = malloc(m * sizeof(char));
+
+    // Fill operations array
+    for (int i = 0; i < m_member; i++) operations[i] = 'M';
+    for (int i = 0; i < m_insert; i++) operations[m_member + i] = 'I';
+    for (int i = 0; i < m_delete; i++) operations[m_member + m_insert + i] = 'D';
+
+    // Shuffle operations array
+    ShuffleOperations(operations, m);
+
     for (int i = 0; i < m; i++) {
-        if (i < m_member) {
-            printf("Looking for %d: %d\n", opr_values[i], Member(opr_values[i], *head_pp));
-        } else if (i < m_member + m_insert) {
-            printf("Inserting %d\n", opr_values[i]);
-            Insert(opr_values[i], head_pp);
-        } else {
-            printf("Deleting %d\n", opr_values[i]);
-            Delete(opr_values[i], head_pp);
+        switch (operations[i]) {
+            case 'M':
+                Member(opr_values[i], *head_pp);
+                break;
+            case 'I':
+                Insert(opr_values[i], head_pp);
+                break;
+            case 'D':
+                Delete(opr_values[i], head_pp);
+                break;
         }
     }
+
+    free(operations);
 }
 
 void print_list(struct list_node_s *head) {
