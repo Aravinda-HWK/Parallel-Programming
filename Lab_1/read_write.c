@@ -20,7 +20,11 @@ int thread_count;
 // Structure to hold thread arguments
 typedef struct {
     struct list_node_s **head_pp;
-    long rank;
+    int start;
+    int end;
+    double member_ratio;
+    double insert_ratio;
+    double delete_ratio;
 } thread_data_t;
 
 // Function prototypes
@@ -147,22 +151,45 @@ int Delete(int value, struct list_node_s **head_pp) {
 void *ThreadFunction(void *arg) {
     thread_data_t *data = (thread_data_t *)arg;
     struct list_node_s **head_pp = data->head_pp;
-    long rank = data->rank;
+    int start = data->start;
+    int end = data->end;
+    double member_ratio = data->member_ratio;
+    double insert_ratio = data->insert_ratio;
+    double delete_ratio = data->delete_ratio;
 
-    int start = rank;
-    int step = thread_count;
+    int total_ops = end - start;
+    int member_ops = total_ops * member_ratio;
+    int insert_ops = total_ops * insert_ratio;
+    int delete_ops = total_ops * delete_ratio;
 
-    for (int i = start; i < m; i += step) {
-        if (i < m_member) {
-            printf("Thread %ld: Looking for %d: %d\n", rank, opr_values[i], Member(opr_values[i], *head_pp));
-        } else if (i < m_member + m_insert) {
-            printf("Thread %ld: Inserting %d\n", rank, opr_values[i]);
-            Insert(opr_values[i], head_pp);
-        } else {
-            printf("Thread %ld: Deleting %d\n", rank, opr_values[i]);
-            Delete(opr_values[i], head_pp);
+    char *operations = malloc(total_ops * sizeof(char));
+    for (int i = 0; i < member_ops; i++) operations[i] = 'M';
+    for (int i = 0; i < insert_ops; i++) operations[member_ops + i] = 'I';
+    for (int i = 0; i < delete_ops; i++) operations[member_ops + insert_ops + i] = 'D';
+
+    // Shuffle the operations array
+    for (int i = total_ops - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        char temp = operations[i];
+        operations[i] = operations[j];
+        operations[j] = temp;
+    }
+
+    for (int i = start, j = 0; i < end; i++, j++) {
+        switch (operations[j]) {
+            case 'M':
+                Member(opr_values[i], *head_pp);
+                break;
+            case 'I':
+                Insert(opr_values[i], head_pp);
+                break;
+            case 'D':
+                Delete(opr_values[i], head_pp);
+                break;
         }
     }
+
+    free(operations);
     return NULL;
 }
 
@@ -184,9 +211,13 @@ int main(int argc, char *argv[]) {
     thread_count = strtol(argv[1], NULL, 10);
     n = 1000;
     m = 10000;
-    m_member = m * atof(argv[2]);
-    m_insert = m * atof(argv[3]);
-    m_delete = m * atof(argv[4]);
+    double member_ratio = atof(argv[2]);
+    double insert_ratio = atof(argv[3]);
+    double delete_ratio = atof(argv[4]);
+
+    m_member = m * member_ratio;
+    m_insert = m * insert_ratio;
+    m_delete = m * delete_ratio;
     printf("%d %d %d %d %d\n", n, m, m_member, m_insert, m_delete);
 
     opr_values = malloc(m * sizeof(int));
@@ -214,13 +245,21 @@ int main(int argc, char *argv[]) {
     pthread_t *thread_handles = malloc(thread_count * sizeof(pthread_t));
     thread_data_t *thread_data_array = malloc(thread_count * sizeof(thread_data_t));
 
+    int ops_per_thread = m / thread_count;
+
     clock_t start, end;
     double cpu_time_used;
     start = clock();
     for (long thread = 0; thread < thread_count; thread++) {
         thread_data_array[thread].head_pp = &head;
-        thread_data_array[thread].rank = thread;
-        printf("Creating thread %ld\n", thread);
+        thread_data_array[thread].start = thread * ops_per_thread;
+        thread_data_array[thread].end = (thread + 1) * ops_per_thread;
+        if (thread == thread_count - 1) {
+            thread_data_array[thread].end = m;
+        }
+        thread_data_array[thread].member_ratio = member_ratio;
+        thread_data_array[thread].insert_ratio = insert_ratio;
+        thread_data_array[thread].delete_ratio = delete_ratio;
         pthread_create(&thread_handles[thread], NULL, ThreadFunction, (void *)&thread_data_array[thread]);
     }
     for (long thread = 0; thread < thread_count; thread++) {
@@ -229,6 +268,7 @@ int main(int argc, char *argv[]) {
     end = clock();
     cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("Time taken: %f\n", cpu_time_used);
+
 
     // Save the results to a file
     FILE *file = fopen("results.txt", "a");

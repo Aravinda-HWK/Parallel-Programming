@@ -277,7 +277,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Error opening file for writing\n");
         exit(EXIT_FAILURE);
     }
-    fprintf(file, "n: %d, m: %d, m_member: %d, m_insert: %d, m_delete: %d, thread_count: %d, time: %f\n", n, m, m_member, m_insert, m_delete, thread_count, cpu_time_used);
+    fprintf(file, "n: %d, m: %d,type: %s, m_member: %d, m_insert: %d, m_delete: %d, thread_count: %d, time: %f\n", n, m,"Read Write Lock", m_member, m_insert, m_delete, thread_count, cpu_time_used);
     fclose(file);
 
     // Destroy mutex
