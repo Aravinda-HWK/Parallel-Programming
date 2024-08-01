@@ -30,7 +30,6 @@ typedef struct {
 // Function prototypes
 void print_list(struct list_node_s *head);
 int Member(int value, struct list_node_s *head_p);
-int InsertWithoutParellel(int value, struct list_node_s **head_pp);
 int Insert(int value, struct list_node_s **head_pp);
 int Delete(int value, struct list_node_s **head_pp);
 void *ThreadFunction(void *arg);
@@ -38,51 +37,18 @@ void *ThreadFunction(void *arg);
 // Function to check if a value is a member of the linked list
 int Member(int value, struct list_node_s *head_p) {
     struct list_node_s *curr_p = head_p;
-    pthread_rwlock_rdlock(&list_rwlock);
     // Traverse the list to find the value
     while (curr_p != NULL && curr_p->data < value)
         curr_p = curr_p->next;
 
     int found = (curr_p != NULL && curr_p->data == value);
 
-    pthread_rwlock_unlock(&list_rwlock);
     return found;
 }
 
-// Function to insert a new node into the list without parallelism
-int InsertWithoutParellel(int value, struct list_node_s **head_pp) {
-    struct list_node_s *curr_p = *head_pp;
-    struct list_node_s *pred_p = NULL;
-    struct list_node_s *temp_p;
-
-    // Traverse the list to find the correct position to insert
-    while (curr_p != NULL && curr_p->data < value) {
-        pred_p = curr_p;
-        curr_p = curr_p->next;
-    }
-
-    // If value is not already in the list, insert the new node
-    if (curr_p == NULL || curr_p->data > value) {
-        temp_p = malloc(sizeof(struct list_node_s));
-        temp_p->data = value;
-        temp_p->next = curr_p;
-
-        if (pred_p == NULL) {
-            // New first node
-            *head_pp = temp_p;
-        } else {
-            pred_p->next = temp_p;
-        }
-        return 1;
-    } else {
-        // Value already in list
-        return 0;
-    }
-}
 
 // Function to insert a new node into the list
 int Insert(int value, struct list_node_s **head_pp) {
-    pthread_rwlock_wrlock(&list_rwlock);
 
     struct list_node_s *curr_p = *head_pp;
     struct list_node_s *pred_p = NULL;
@@ -106,18 +72,15 @@ int Insert(int value, struct list_node_s **head_pp) {
         } else {
             pred_p->next = temp_p;
         }
-        pthread_rwlock_unlock(&list_rwlock);
         return 1;
     } else {
         // Value already in list
-        pthread_rwlock_unlock(&list_rwlock);
         return 0;
     }
 }
 
 // Function to delete a node from the list
 int Delete(int value, struct list_node_s **head_pp) {
-    pthread_rwlock_wrlock(&list_rwlock);
 
     struct list_node_s *curr_p = *head_pp;
     struct list_node_s *pred_p = NULL;
@@ -138,11 +101,9 @@ int Delete(int value, struct list_node_s **head_pp) {
             pred_p->next = curr_p->next;
             free(curr_p);
         }
-        pthread_rwlock_unlock(&list_rwlock);
         return 1;
     } else {
         // Value isn't in list
-        pthread_rwlock_unlock(&list_rwlock);
         return 0;
     }
 }
@@ -178,13 +139,19 @@ void *ThreadFunction(void *arg) {
     for (int i = start, j = 0; i < end; i++, j++) {
         switch (operations[j]) {
             case 'M':
+                pthread_rwlock_rdlock(&list_rwlock);
                 Member(opr_values[i], *head_pp);
+                pthread_rwlock_unlock(&list_rwlock);
                 break;
             case 'I':
+                pthread_rwlock_wrlock(&list_rwlock);
                 Insert(opr_values[i], head_pp);
+                pthread_rwlock_unlock(&list_rwlock);
                 break;
             case 'D':
+                pthread_rwlock_wrlock(&list_rwlock);
                 Delete(opr_values[i], head_pp);
+                pthread_rwlock_unlock(&list_rwlock);
                 break;
         }
     }
@@ -230,7 +197,7 @@ int main(int argc, char *argv[]) {
 
     for (i = 0; i < n; i++) {
         ins_value = rand() % 65535; // value should be between 2^16 - 1
-        InsertWithoutParellel(ins_value, &head);
+        Insert(ins_value, &head);
     }
     for (i = 0; i < m; i++) {
         opr_values[i] = rand() % 65535; // value should be between 2^16 - 1
