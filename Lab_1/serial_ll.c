@@ -269,7 +269,11 @@ int main(int argc, char *argv[])
         struct list_node_s *head = NULL;
         for (int i = 0; i < n; i++)
         {
-            Insert(rand() % 65535, &head);
+            int insert_boolean = Insert(rand() % 65535, &head);
+            if (insert_boolean == 0)
+            {
+                i--;
+            }
         }
         for (int i = 0; i < m; i++)
         {
@@ -311,7 +315,11 @@ int main(int argc, char *argv[])
         struct list_node_s *head = NULL;
         for (int i = 0; i < n; i++)
         {
-            Insert(rand() % 65535, &head);
+            int insert_boolean = Insert(rand() % 65535, &head);
+            if (insert_boolean == 0)
+            {
+                i--;
+            }
         }
         for (int i = 0; i < m; i++)
         {
