@@ -259,7 +259,7 @@ int main(int argc, char *argv[])
     // free(opr_values);
 
     double execution_times[100];
-    int initial_runs = 10;
+    int initial_runs = 100;
 
     srand(time(NULL)); // Set different random seed for each execution
 
@@ -284,7 +284,7 @@ int main(int argc, char *argv[])
         ExecuteOperations(&head);
         clock_t end = clock();
 
-        execution_times[run] = ((double)(end - start)) / CLOCKS_PER_SEC;
+        execution_times[run] = ((double)(end - start)) * 1000000 / CLOCKS_PER_SEC;
 
         // Free the allocated memory
         struct list_node_s *current = head;
@@ -330,7 +330,7 @@ int main(int argc, char *argv[])
         ExecuteOperations(&head);
         clock_t end = clock();
 
-        final_times[run] = ((double)(end - start)) / CLOCKS_PER_SEC;
+        final_times[run] = ((double)(end - start)) * 1000000 / CLOCKS_PER_SEC;
 
         // Free the allocated memory
         struct list_node_s *current = head;

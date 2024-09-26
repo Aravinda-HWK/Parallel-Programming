@@ -313,7 +313,7 @@ int main(int argc, char *argv[])
     // }
     // free(opr_values);
 
-    int initial_runs = 10;
+    int initial_runs = 100;
     double execution_times[initial_runs];
 
     // Perform initial runs to estimate mean and standard deviation
@@ -345,7 +345,7 @@ int main(int argc, char *argv[])
             pthread_join(thread_handles[thread], NULL);
         }
         end = clock();
-        execution_times[run] = ((double)(end - start)) / CLOCKS_PER_SEC;
+        execution_times[run] = ((double)(end - start)) * 1000000 / CLOCKS_PER_SEC;
 
         free(thread_handles);
         free(thread_data_array);
@@ -393,7 +393,7 @@ int main(int argc, char *argv[])
             pthread_join(thread_handles[thread], NULL);
         }
         end = clock();
-        final_times[run] = ((double)(end - start)) / CLOCKS_PER_SEC;
+        final_times[run] = ((double)(end - start)) * 1000000 / CLOCKS_PER_SEC;
 
         free(thread_handles);
         free(thread_data_array);
