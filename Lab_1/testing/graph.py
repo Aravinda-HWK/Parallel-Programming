@@ -46,20 +46,18 @@ def plot_case(case_no, title, serial_mean, mutex_means, readwrite_means):
 
     plt.figure(figsize=(10, 6))
 
-    # Serial: Plot a single bar (as it's constant) for reference across all threads
-    plt.bar(r1 - bar_width, [serial_mean] * len(threads),
+    # Serial: Plot a single bar (as it's constant) only for the first thread
+    plt.bar([r1[0] - bar_width], [serial_mean],
             width=bar_width, label='Serial')
 
     # Mutex: Plot the bars for mutex across the thread counts
     plt.bar(r1, mutex_means, width=bar_width, label='Mutex')
 
     # Read-Write Lock: Plot the bars for read-write lock across the thread counts
-    plt.bar(r2, readwrite_means, width=bar_width,
-            label='Read-Write Lock')
+    plt.bar(r2, readwrite_means, width=bar_width, label='Read-Write Lock')
 
     # Add labels and title
-    plt.title(
-        f'Case {case_no} : {title})')
+    plt.title(f'Case {case_no}: {title}')
     plt.xlabel('Number of Threads')
     plt.ylabel('Average Execution Time')
     plt.xticks([r + bar_width / 2 for r in r1], threads)
@@ -72,9 +70,9 @@ def plot_case(case_no, title, serial_mean, mutex_means, readwrite_means):
 
 
 # Plot the graphs for each case
-plot_case(1, "mMember = 0.99, mInsert = 0.005, mDelete = 0.005", serial_means_case_1[0],
-          mutex_means_case_1, readwrite_means_case_1)
-plot_case(2, "mMember = 0.9, mInsert = 0.05, mDelete = 0.05", serial_means_case_2[0],
-          mutex_means_case_2, readwrite_means_case_2)
-plot_case(3, "Case 1: mMember = 0.5, mInsert = 0.25, mDelete = 0.25", serial_means_case_3[0],
-          mutex_means_case_3, readwrite_means_case_3)
+plot_case(1, "mMember = 0.99, mInsert = 0.005, mDelete = 0.005",
+          serial_means_case_1[0], mutex_means_case_1, readwrite_means_case_1)
+plot_case(2, "mMember = 0.9, mInsert = 0.05, mDelete = 0.05",
+          serial_means_case_2[0], mutex_means_case_2, readwrite_means_case_2)
+plot_case(3, "mMember = 0.5, mInsert = 0.25, mDelete = 0.25",
+          serial_means_case_3[0], mutex_means_case_3, readwrite_means_case_3)
