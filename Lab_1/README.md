@@ -4,14 +4,40 @@ This repository is used for lab exercises in the Parallel and Concurrent Program
 
 ## Compilation
 
-To compile the C program, use the following command in the terminal:
+Open a terminal in the repository's directory and run:
 
 ```bash
-gcc -std=c99 -o {filename} {filename}.c -lpthread
+make
 ```
 
-To run the C program, use the following command in the termianl:
+## Individual Compilation
 
 ```bash
-./{filename} {arguments}
+make serial_ll
+```
+
+or
+
+```bash
+make mutex
+```
+
+or
+
+```bash
+make read_write
+```
+
+## Running the Programs
+
+```bash
+make run_serial_ll
+```
+
+```bash
+make run_mutex
+```
+
+```bash
+make run_read_write
 ```
