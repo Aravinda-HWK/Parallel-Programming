@@ -352,7 +352,7 @@ int main(int argc, char *argv[])
     printf("95%% Confidence Interval: [%f, %f]\n", ci_lower, ci_upper);
 
     // Save the results to a file
-    FILE *file = fopen("results_read_write.txt", "a");
+    FILE *file = fopen("results/results_read_write.txt", "a");
     if (file == NULL)
     {
         fprintf(stderr, "Error opening file for writing\n");
