@@ -26,11 +26,11 @@ def extract_means_from_file(file_name):
 
 # Read the data from each file
 serial_means_case_1, serial_means_case_2, serial_means_case_3 = extract_means_from_file(
-    'Lab_1/results_serial.txt')
+    'Lab_1/results/results_serial.txt')
 mutex_means_case_1, mutex_means_case_2, mutex_means_case_3 = extract_means_from_file(
-    'Lab_1/results_mutex.txt')
+    'Lab_1/results/results_mutex.txt')
 readwrite_means_case_1, readwrite_means_case_2, readwrite_means_case_3 = extract_means_from_file(
-    'Lab_1/results_read_write.txt')
+    'Lab_1/results/results_read_write.txt')
 
 # Threads array (for mutex and readwrite, serial will use a constant mean value)
 threads = [1, 2, 4, 8]
