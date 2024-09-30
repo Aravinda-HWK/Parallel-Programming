@@ -257,61 +257,8 @@ int main(int argc, char *argv[])
         opr_values[i] = rand() % 65535; // value should be between 2^16 - 1
     }
 
-    // print_list(head);
-
     // Initialize mutex
     pthread_mutex_init(&list_mutex, NULL);
-
-    // // Create threads
-    // pthread_t *thread_handles = malloc(thread_count * sizeof(pthread_t));
-    // thread_data_t *thread_data_array = malloc(thread_count * sizeof(thread_data_t));
-
-    // int ops_per_thread = m / thread_count;
-
-    // clock_t start, end;
-    // double cpu_time_used;
-    // start = clock();
-    // for (long thread = 0; thread < thread_count; thread++) {
-    //     thread_data_array[thread].head_pp = &head;
-    //     thread_data_array[thread].start = thread * ops_per_thread;
-    //     thread_data_array[thread].end = (thread + 1) * ops_per_thread;
-    //     if (thread == thread_count - 1) {
-    //         thread_data_array[thread].end = m;
-    //     }
-    //     thread_data_array[thread].member_ratio = member_ratio;
-    //     thread_data_array[thread].insert_ratio = insert_ratio;
-    //     thread_data_array[thread].delete_ratio = delete_ratio;
-    //     pthread_create(&thread_handles[thread], NULL, ThreadFunction, (void *)&thread_data_array[thread]);
-    // }
-    // for (long thread = 0; thread < thread_count; thread++) {
-    //     pthread_join(thread_handles[thread], NULL);
-    // }
-    // end = clock();
-    // cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    // printf("Time taken: %f\n", cpu_time_used);
-
-    // // Save the results to a file
-    // FILE *file = fopen("results.txt", "a");
-    // if (file == NULL) {
-    //     fprintf(stderr, "Error opening file for writing\n");
-    //     exit(EXIT_FAILURE);
-    // }
-    // fprintf(file, "n: %d, m: %d,type: %s, m_member: %d, m_insert: %d, m_delete: %d, thread_count: %d, time: %f\n", n, m,"Read Write Lock", m_member, m_insert, m_delete, thread_count, cpu_time_used);
-    // fclose(file);
-
-    // // Destroy mutex
-    // pthread_mutex_destroy(&list_mutex);
-    // free(thread_handles);
-    // free(thread_data_array);
-
-    // // Free the allocated memory
-    // struct list_node_s *current = head;
-    // while (current != NULL) {
-    //     struct list_node_s *temp = current;
-    //     current = current->next;
-    //     free(temp);
-    // }
-    // free(opr_values);
 
     int initial_runs = 100;
     double execution_times[initial_runs];
@@ -406,7 +353,7 @@ int main(int argc, char *argv[])
     printf("95%% Confidence Interval: [%f, %f]\n", ci_lower, ci_upper);
 
     // Save the results to a file
-    FILE *file = fopen("results_mutex.txt", "a");
+    FILE *file = fopen("results/results_mutex.txt", "a");
     if (file == NULL)
     {
         fprintf(stderr, "Error opening file for writing\n");

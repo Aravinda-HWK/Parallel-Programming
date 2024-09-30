@@ -207,56 +207,6 @@ int main(int argc, char *argv[])
     printf("%d %d %d %d %d\n", n, m, m_member, m_insert, m_delete);
 
     opr_values = malloc(m * sizeof(int));
-    // int i, ins_value;
-
-    // // Create linked list head pointer
-    // struct list_node_s *head = NULL;
-
-    // srand(time(NULL)); // Set different random seed for each execution
-
-    // for (i = 0; i < n; i++)
-    // {
-    //     ins_value = rand() % 65535; // value should be between 2^16 - 1
-    //     Insert(ins_value, &head);
-    // }
-    // for (i = 0; i < m; i++)
-    // {
-    //     opr_values[i] = rand() % 65535; // value should be between 2^16 - 1
-    // }
-
-    // print_list(head);
-
-    // clock_t start, end;
-    // double cpu_time_used;
-    // start = clock();
-
-    // ExecuteOperations(&head);
-
-    // end = clock();
-    // cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    // printf("Time taken: %f\n", cpu_time_used);
-
-    // // Save the results to a file
-    // FILE *file = fopen("results.txt", "a");
-    // if (file == NULL)
-    // {
-    //     fprintf(stderr, "Error opening file for writing\n");
-    //     exit(EXIT_FAILURE);
-    // }
-    // fprintf(file, "n: %d, m: %d, m_member: %d, m_insert: %d, m_delete: %d, thread_count: %d, time: %f\n", n, m, m_member, m_insert, m_delete, thread_count, cpu_time_used);
-    // fclose(file);
-
-    // // Free the allocated memory
-    // struct list_node_s *current = head;
-    // struct list_node_s *next;
-    // while (current != NULL)
-    // {
-    //     next = current->next;
-    //     free(current);
-    //     current = next;
-    // }
-
-    // free(opr_values);
 
     double execution_times[100];
     int initial_runs = 100;
@@ -350,7 +300,7 @@ int main(int argc, char *argv[])
     printf("95%% Confidence Interval: [%f, %f]\n", ci_lower, ci_upper);
 
     // Save the results to a file
-    FILE *file = fopen("results_serial.txt", "a");
+    FILE *file = fopen("results/results_serial.txt", "a");
     if (file == NULL)
     {
         fprintf(stderr, "Error opening file for writing\n");
