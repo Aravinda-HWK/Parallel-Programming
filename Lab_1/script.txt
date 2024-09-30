@@ -1,6 +1,10 @@
+gcc -std=c99 -o serial_ll serial_ll.c -lpthread
+
 ./serial_ll 1 0.99 0.005 0.005
 ./serial_ll 1 0.9 0.05 0.05
 ./serial_ll 1 0.5 0.25 0.25
+
+gcc -std=c99 -o mutex mutex.c -lpthread
 
 ./mutex 1 0.99 0.005 0.005
 ./mutex 1 0.9 0.05 0.05
@@ -17,6 +21,8 @@
 ./mutex 16 0.99 0.005 0.005
 ./mutex 16 0.9 0.05 0.05
 ./mutex 16 0.5 0.25 0.25
+
+gcc -std=c99 -o read_write read_write.c -lpthread
 
 ./read_write 1 0.99 0.005 0.005
 ./read_write 1 0.9 0.05 0.05
