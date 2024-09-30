@@ -33,7 +33,7 @@ readwrite_means_case_1, readwrite_means_case_2, readwrite_means_case_3 = extract
     'Lab_1/results_read_write.txt')
 
 # Threads array (for mutex and readwrite, serial will use a constant mean value)
-threads = [1, 2, 4, 8, 16]
+threads = [1, 2, 4, 8]
 bar_width = 0.25
 
 # Function to plot the bar graphs for each case

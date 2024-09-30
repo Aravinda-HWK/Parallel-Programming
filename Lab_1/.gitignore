@@ -4,3 +4,6 @@ results_serial.txt
 mutex.exe
 read_write.exe
 serial_ll.exe
+mutex
+read_write
+serial_ll

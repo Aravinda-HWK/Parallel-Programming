@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99 -lpthread
+CFLAGS = -std=c99 -D_XOPEN_SOURCE=700 -lpthread  # Ensure XOPEN_SOURCE is defined
 
 # Target executable names
 TARGETS = serial_ll mutex read_write
@@ -8,13 +8,13 @@ TARGETS = serial_ll mutex read_write
 all: $(TARGETS)
 
 serial_ll: serial_ll.c
-	$(CC) $(CFLAGS) -o serial_ll serial_ll.c
+	$(CC) $(CFLAGS) -o serial_ll serial_ll.c -lm
 
 mutex: mutex.c
-	$(CC) $(CFLAGS) -o mutex mutex.c
+	$(CC) $(CFLAGS) -o mutex mutex.c -lm
 
 read_write: read_write.c
-	$(CC) $(CFLAGS) -o read_write read_write.c
+	$(CC) $(CFLAGS) -o read_write read_write.c -lm
 
 # Run the programs with the specified arguments
 run_serial_ll:
