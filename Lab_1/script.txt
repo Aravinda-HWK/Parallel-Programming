@@ -18,9 +18,6 @@ gcc -std=c99 -o mutex mutex.c -lpthread
 ./mutex 8 0.99 0.005 0.005
 ./mutex 8 0.9 0.05 0.05
 ./mutex 8 0.5 0.25 0.25
-./mutex 16 0.99 0.005 0.005
-./mutex 16 0.9 0.05 0.05
-./mutex 16 0.5 0.25 0.25
 
 gcc -std=c99 -o read_write read_write.c -lpthread
 
@@ -36,6 +33,3 @@ gcc -std=c99 -o read_write read_write.c -lpthread
 ./read_write 8 0.99 0.005 0.005
 ./read_write 8 0.9 0.05 0.05
 ./read_write 8 0.5 0.25 0.25
-./read_write 16 0.99 0.005 0.005
-./read_write 16 0.9 0.05 0.05
-./read_write 16 0.5 0.25 0.25
