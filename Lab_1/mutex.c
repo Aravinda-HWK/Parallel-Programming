@@ -219,6 +219,30 @@ void CalculateStats(double *times, int sample_count, double *mean, double *std_d
     *ci_upper = *mean + margin_of_error;
 }
 
+int count_lines_in_file(const char *file_name)
+{
+    FILE *file = fopen(file_name, "r");
+    if (file == NULL)
+    {
+        fprintf(stderr, "Error opening file for reading\n");
+        exit(EXIT_FAILURE);
+    }
+
+    int line_count = 0;
+    char ch;
+
+    while ((ch = fgetc(file)) != EOF)
+    {
+        if (ch == '\n')
+        {
+            line_count++;
+        }
+    }
+
+    fclose(file);
+    return line_count;
+}
+
 int main(int argc, char *argv[])
 {
     if (argc != 5)
@@ -352,15 +376,29 @@ int main(int argc, char *argv[])
     printf("Final Mean: %f, Final Std Dev: %f\n", mean, std_dev);
     printf("95%% Confidence Interval: [%f, %f]\n", ci_lower, ci_upper);
 
+    const char *file_name = "results/results_mutex.txt";
+    int line_count = count_lines_in_file(file_name);
+
+    if (line_count >= 12)
+    {
+        FILE *file = fopen(file_name, "w");
+        if (file == NULL)
+        {
+            fprintf(stderr, "Error opening file for clearing\n");
+            exit(EXIT_FAILURE);
+        }
+        fclose(file);
+    }
+
     // Save the results to a file
-    FILE *file = fopen("results/results_mutex.txt", "a");
+    FILE *file = fopen(file_name, "a");
     if (file == NULL)
     {
         fprintf(stderr, "Error opening file for writing\n");
         exit(EXIT_FAILURE);
     }
-    fprintf(file, "n: %d, m: %d,type: %s, m_member: %d, m_insert: %d, m_delete: %d, thread_count: %d, mean: %f, std_dev: %f, ci_lower: %f, ci_upper: %f\n",
-            n, m, "Read Write Lock", m_member, m_insert, m_delete, thread_count, mean, std_dev, ci_lower, ci_upper);
+    fprintf(file, "n: %d, m: %d, m_member: %d, m_insert: %d, m_delete: %d, thread_count: %d, mean: %f, std_dev: %f, ci_lower: %f, ci_upper: %f\n",
+            n, m, m_member, m_insert, m_delete, thread_count, mean, std_dev, ci_lower, ci_upper);
     fclose(file);
 
     // Destroy mutex

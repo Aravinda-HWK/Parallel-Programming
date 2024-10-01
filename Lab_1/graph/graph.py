@@ -11,7 +11,8 @@ def extract_means_from_file(file_name):
 
     with open(file_name, 'r') as file:
         for line in file:
-            if "m_member: 9899" in line:  # Case 1 (mMember = 0.99)
+            # Case 1 (mMember = 0.99)
+            if "m_member: 9900" in line or "m_member: 9899" in line:
                 mean_value = float(line.split("mean: ")[1].split(",")[0])
                 means_case_1.append(mean_value)
             elif "m_member: 9000" in line:  # Case 2 (mMember = 0.90)
