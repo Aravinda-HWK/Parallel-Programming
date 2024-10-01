@@ -375,7 +375,7 @@ int main(int argc, char *argv[])
     printf("Final Mean: %f, Final Std Dev: %f\n", mean, std_dev);
     printf("95%% Confidence Interval: [%f, %f]\n", ci_lower, ci_upper);
 
-    const char *file_name = "results/results_mutex.txt";
+    const char *file_name = "results/results_read_write.txt";
     int line_count = count_lines_in_file(file_name);
 
     if (line_count >= 12)
