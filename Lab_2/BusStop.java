@@ -74,7 +74,7 @@ public class BusStop {
 
                 // Generate an exponential delay with a mean of 30 seconds
                 try {
-                    Thread.sleep(busStop.getExponentialDelay(1));
+                    Thread.sleep(busStop.getExponentialDelay(30));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -97,7 +97,7 @@ public class BusStop {
 
                 // Generate an exponential delay with a mean of 20 minutes (1200 seconds)
                 try {
-                    Thread.sleep(busStop.getExponentialDelay(40));
+                    Thread.sleep(busStop.getExponentialDelay(1200));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
