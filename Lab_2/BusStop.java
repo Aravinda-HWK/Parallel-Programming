@@ -22,9 +22,9 @@ public class BusStop {
         lock.lock(); // Critical section
         try {
             waitingRiders++;
-            System.out.println("Rider " + riderId + " arrives. Waiting riders: " + waitingRiders);
+            System.out.println("Rider " + riderId + " arrives. Number of waiting riders is: " + waitingRiders);
         } finally {
-            lock.unlock();
+            lock.unlock(); // Release the lock
         }
 
         busSemaphore.acquire(); // Wait for a bus to arrive
@@ -49,10 +49,10 @@ public class BusStop {
             }
             waitingRiders -= boardingRiders; // Update the number of waiting riders
         } finally {
-            lock.unlock();
+            lock.unlock(); // Release the lock
         }
 
-        System.out.println("Bus departs with " + Math.min(boardingRiders, MAX_CAPACITY) + " riders.");
+        System.out.println("Bus "+ busId+ " departs with " + Math.min(boardingRiders, MAX_CAPACITY) + " riders.");
         allAboardSemaphore.release(boardingRiders); // Signal that the bus is full and departing
     }
 
@@ -61,7 +61,8 @@ public class BusStop {
 
         // Simulate riders arriving continuously
         new Thread(() -> {
-            for (int i = 0; i < 80; i++) {
+            int i = 0;
+            while (true) {
                 int riderId = i + 1;
                 new Thread(() -> {
                     try {
@@ -73,16 +74,18 @@ public class BusStop {
 
                 // Generate an exponential delay with a mean of 30 seconds
                 try {
-                    Thread.sleep(busStop.getExponentialDelay(0.05));
+                    Thread.sleep(busStop.getExponentialDelay(1));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                i++;
             }
         }).start();
 
         // Simulate buses arriving continuously
         new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
+            int i = 0;
+            while (true) {
                 int busId = i + 1;
                 new Thread(() -> {
                     try {
@@ -94,10 +97,11 @@ public class BusStop {
 
                 // Generate an exponential delay with a mean of 20 minutes (1200 seconds)
                 try {
-                    Thread.sleep(busStop.getExponentialDelay(2));
+                    Thread.sleep(busStop.getExponentialDelay(40));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                i++;
             }
         }).start();
 
